@@ -8,8 +8,19 @@ This repository includes a standard Airflow `docker-compose.yaml`. To get starte
 
 1. **Initialize the environment:**
    ```bash
-   mkdir -p ./logs ./plugins ./config
+   # Create necessary directories
+   mkdir -p ./logs ./plugins ./config ./data
+
+   # Configure Environment Variables
    echo -e "AIRFLOW_UID=$(id -u)" > .env
+   
+   # Generate Fernet Key (Required for encryption)
+   echo "FERNET_KEY=$(python3 -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())')" >> .env
+   
+   # Add Pandas dependency (Not included in default Airflow image)
+   echo "_PIP_ADDITIONAL_REQUIREMENTS=pandas" >> .env
+
+   # Initialize Airflow Database
    docker compose up airflow-init
    ```
 
@@ -28,11 +39,17 @@ This repository includes a standard Airflow `docker-compose.yaml`. To get starte
 
 ## 📊 Visual Proof
 
+### Initialization Success
+![Init Success](./screenshots/1.1-hello-world-success.jpeg)
+
 ### DAG Graph View
 ![DAG Graph](./screenshots/1.2-etl-pipeline-graph.jpeg)
 
 ### Successful Run
 ![Success](./screenshots/3.1-weather-dag-success.jpeg)
+
+### Generated Data Artifacts
+![Data Listing](./screenshots/1.3-data-files-listing.jpeg)
 
 ## ETL Logic Overview
 
