@@ -17,6 +17,7 @@ config/
 
 # Database data (local development)
 db_data/
+data/
 
 # OS generated files
 .DS_Store
